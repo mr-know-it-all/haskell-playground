@@ -60,3 +60,6 @@ is_zero = \n -> n (\x -> false) true
 -- λa.a (λb.b+1) (0)
 unchurch_num :: ((Integer -> Integer) -> Integer -> a) -> a
 unchurch_num = \a -> a (\b -> b + 1) (0)
+
+-- λf.(λx.f (x x)) (λx.f (x x))
+y f = f (y f)

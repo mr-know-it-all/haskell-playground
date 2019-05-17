@@ -87,7 +87,20 @@ tests_numerals =
     TestLabel "test if is zero" test_if_zero
   ]
 
+fac :: (Int -> Int) -> Int -> Int
+fac m n = if n == 0 then 1 else n * m (n - 1)
+
+test_y_one = TestCase $ assertEqual "factorial of 5 is" 120 $ y fac 5
+test_y_two = TestCase $ assertEqual "factorial of 5 is" 5040 $ y fac 7
+
+tests_y_combinator =
+  TestList [
+    TestLabel "test y combinator one" test_y_one,
+    TestLabel "test y combinator two" test_y_two
+  ]
+
 main = do
   runTestTT tests_bools
   runTestTT tests_conditionals
   runTestTT tests_numerals
+  runTestTT tests_y_combinator
