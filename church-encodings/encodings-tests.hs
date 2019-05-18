@@ -87,6 +87,31 @@ tests_numerals =
     TestLabel "test if is zero" test_if_zero
   ]
 
+test_succ_one = TestCase $ assertEqual "succ of 1 is 2" 2 (unchurch_num $ succ $ num 1)
+test_succ_two = TestCase $ assertEqual "succ of 1 is 2" 2123 (unchurch_num $ succ $ num 2122)
+test_pred_one = TestCase $ assertEqual "pred of 1 is 0" 0 (unchurch_num $ pred $ num 1)
+test_pred_two = TestCase $ assertEqual "pred of 2122 is 2121" 2121 (unchurch_num $ pred $ num 2122)
+test_add_one = TestCase $ assertEqual "add 1 and 2 is 3" 3 (unchurch_num $ add (num 1) (num 2))
+test_add_two = TestCase $ assertEqual "add 1123 and 12312 is 13435" 13435 (unchurch_num $ add (num 1123) (num 12312))
+test_mult_one = TestCase $ assertEqual "mult 1 and 2 is 2" 2 (unchurch_num $ mult (num 1) (num 2))
+test_mult_two = TestCase $ assertEqual "mult 1123 and 11234 is 1261129" 1261129 (unchurch_num $ mult (num 1123) (num 1123))
+test_exp_one = TestCase $ assertEqual "2 pow 3 is 8" 8 (unchurch_num $ exp (num 2) (num 3))
+test_exp_two = TestCase $ assertEqual "21 pow 4 is 194481" 194481 (unchurch_num $ exp (num 21) (num 4))
+
+test_number_operations =
+  TestList [
+    TestLabel "test succ one" test_succ_one,
+    TestLabel "test succ two" test_succ_two,
+    TestLabel "test pred one" test_pred_two,
+    TestLabel "test pred two" test_pred_two,
+    TestLabel "test add one" test_add_one,
+    TestLabel "test add two" test_add_two,
+    TestLabel "test mult one" test_mult_one,
+    TestLabel "test mult two" test_mult_two,
+    TestLabel "test exp one" test_exp_one,
+    TestLabel "test exp two" test_exp_two
+  ]
+
 fac :: (Int -> Int) -> Int -> Int
 fac m n = if n == 0 then 1 else n * m (n - 1)
 
@@ -104,3 +129,4 @@ main = do
   runTestTT tests_conditionals
   runTestTT tests_numerals
   runTestTT tests_y_combinator
+  runTestTT test_number_operations

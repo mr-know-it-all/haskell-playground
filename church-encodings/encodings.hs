@@ -61,5 +61,25 @@ is_zero = \n -> n (\x -> false) true
 unchurch_num :: ((Integer -> Integer) -> Integer -> a) -> a
 unchurch_num = \a -> a (\b -> b + 1) (0)
 
+-- λn.λf.λx.f (n f x)
+succ :: ((a -> a) -> a -> a) -> (a -> a) -> a -> a
+succ = \n -> \f -> \x -> f (n f x)
+
+-- λn.λf.λx.n (λg.λh.h (g f)) (λu.x) (λu.u)
+pred :: (((a3 -> a2) -> (a2 -> a1) -> a1) -> (a4 -> a5) -> (a6 -> a6) -> a) -> a3 -> a5 -> a
+pred = \n -> \f -> \x -> n (\g -> \h -> h (g f)) (\u -> x) (\u -> u)
+
+-- λm.λn.λf.λx.m f (n f x)
+add :: (a2 -> a1 -> a) -> (a2 -> a3 -> a1) -> a2 -> a3 -> a
+add = \m -> \n -> \f -> \x -> m f (n f x)
+
+-- λm.λn.λf.m (n f)
+mult :: (a1 -> a) -> (a2 -> a1) -> a2 -> a
+mult = \m -> \n -> \f -> m (n f)
+
+-- λm.λn.n m
+exp :: a1 -> (a1 -> a) -> a
+exp = \m -> \n -> n m
+
 -- λf.(λx.f (x x)) (λx.f (x x))
 y f = f (y f)
