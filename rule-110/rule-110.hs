@@ -12,10 +12,9 @@ mapInd :: (a -> Int -> b) -> [a] -> [b]
 mapInd f l = zipWith f l [0..]
 
 computeNextGen :: [Int] -> [Int]
-computeNextGen n = mapInd (\x -> \i -> getNextCellState (left n i) (elem n i) (right n i)) n
+computeNextGen n = mapInd (\x -> \i -> getNextCellState (left n i) x (right n i)) n
                                        where
                                         left n i = if i - 1 < 0 then 0 else n!!(i - 1)
-                                        elem n i = n!!i
                                         right n i = if (length n) - 1 < i + 1 then 0 else n!!(i + 1)
 
 prepareForPrint n = intercalate "" $ map (\x -> if x == 0 then " " else ".") n
