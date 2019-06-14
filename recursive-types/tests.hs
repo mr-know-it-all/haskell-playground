@@ -1,5 +1,6 @@
 import Test.HUnit
 import List
+import BinaryTree
 import Prelude
 
 test_length =
@@ -43,5 +44,17 @@ tests_custom_list =
     TestLabel "test list reduce with concat" test_reduce_concat
   ]
 
+test_binary_tree_depth =
+  TestCase $ assertEqual
+    "expecting depth of 4"
+    4
+    $ binaryTreeDepth (Node 'a' (Node 'b' (Node 'c' Leaf Leaf) (Node 'd' (Node 'e' Leaf Leaf) (Node 'f' Leaf Leaf))) (Node 'g' Leaf Leaf))
+
+tests_binary_tree =
+  TestList [
+    TestLabel "binary tree depth test" test_binary_tree_depth
+  ]
+
 main = do
   runTestTT tests_custom_list
+  runTestTT tests_binary_tree
