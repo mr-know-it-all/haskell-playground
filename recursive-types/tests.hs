@@ -48,7 +48,7 @@ test_binary_tree_depth =
   TestCase $ assertEqual
     "expecting depth of 4"
     4
-    $ binaryTreeDepth (Node 'a' (Node 'b' (Node 'c' Leaf Leaf) (Node 'd' (Node 'e' Leaf Leaf) (Node 'f' Leaf Leaf))) (Node 'g' Leaf Leaf))
+    $ binaryTreeDepth (Node 'a' (Node 'b' (Node 'c' TreeEmpty TreeEmpty) (Node 'd' (Node 'e' TreeEmpty TreeEmpty) (Node 'f' TreeEmpty TreeEmpty))) (Node 'g' TreeEmpty TreeEmpty))
 
 tests_binary_tree =
   TestList [
