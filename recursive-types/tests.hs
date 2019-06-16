@@ -44,15 +44,51 @@ tests_custom_list =
     TestLabel "test list reduce with concat" test_reduce_concat
   ]
 
+tree = (
+  Node 'a' (
+    Node 'b' (
+      Node 'c' TreeEmpty TreeEmpty
+    ) (
+      Node 'd' (
+        Node 'e' TreeEmpty TreeEmpty
+      ) (
+        Node 'f' TreeEmpty TreeEmpty
+      )
+    )
+  ) (
+    Node 'g' TreeEmpty TreeEmpty
+  ))
+
 test_binary_tree_depth =
   TestCase $ assertEqual
     "expecting depth of 4"
     4
-    $ binaryTreeDepth (Node 'a' (Node 'b' (Node 'c' TreeEmpty TreeEmpty) (Node 'd' (Node 'e' TreeEmpty TreeEmpty) (Node 'f' TreeEmpty TreeEmpty))) (Node 'g' TreeEmpty TreeEmpty))
+    $ binaryTreeDepth tree
+
+test_binary_tree_preorder =
+  TestCase $ assertEqual
+    "expecting ['a', 'b', 'c', 'd', 'e', 'f', 'g']"
+    ['a', 'b', 'c', 'd', 'e', 'f', 'g']
+    $ binaryTreePreorder tree
+
+test_binary_tree_inorder =
+  TestCase $ assertEqual
+    "expecting ['b', 'c', 'd', 'e', 'f', 'a', 'g']"
+    ['b', 'c', 'd', 'e', 'f', 'a', 'g']
+    $ binaryTreeInorder tree
+
+test_binary_tree_postorder =
+  TestCase $ assertEqual
+    "expecting ['b', 'c', 'd', 'e', 'f', 'g', 'a']"
+    ['b', 'c', 'd', 'e', 'f', 'g', 'a']
+    $ binaryTreePostorder tree
 
 tests_binary_tree =
   TestList [
-    TestLabel "binary tree depth test" test_binary_tree_depth
+    TestLabel "binary tree depth test" test_binary_tree_depth,
+    TestLabel "binary tree preorder test" test_binary_tree_preorder,
+    TestLabel "binary tree inorder test" test_binary_tree_inorder,
+    TestLabel "binary tree postorder test" test_binary_tree_postorder
   ]
 
 main = do
