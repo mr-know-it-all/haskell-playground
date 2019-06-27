@@ -15,10 +15,7 @@ rotateN rotateFn n xs = rotateN rotateFn (n - 1) $ rotateFn xs
 
 isValidMatrix :: Foldable t => [t a] -> Int -> Bool
 isValidMatrix [] _ = False
-isValidMatrix (x:[]) 0 = True
-isValidMatrix (x:[]) n = length x == n
-isValidMatrix (x:xs) 0 = isValidMatrix xs $ length x
-isValidMatrix (x:xs) n = if (length x) /= n then False else isValidMatrix xs n
+isValidMatrix (xs:xss) n = if (length xs) /= n then False else isValidMatrix xss n
 
 complete_rotation_clockwise matrix =
   if isValidMatrix matrix 0 == False then True else (rotateN rotateCW 4 matrix) == matrix
