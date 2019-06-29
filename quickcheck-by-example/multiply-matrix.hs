@@ -1,21 +1,25 @@
 import Data.List
 import Test.QuickCheck
 
-mmult :: Num a => [[a]] -> [[a]] -> [[a]]
-mmult a b =
-  if isValidMatrix a 0 && isValidMatrix b 0
-  then [[ sum $ zipWith (*) ar bc | bc <- (transpose b)] | ar <- a ]
-  else []
+
+data Matrix = Square [[Integer]] | SingleValue Integer deriving (Eq, Show)
+
+mmult :: Matrix -> Matrix -> Matrix
+mmult (SingleValue _) _ = SingleValue 0
+mmult _ (SingleValue _) = SingleValue 0
+mmult (Square a) (Square b) =
+  if isValidMatrix a 0 && isValidMatrix b 0 -- remove and generate valid values
+  then Square [[ sum $ zipWith (*) ar bc | bc <- (transpose b)] | ar <- a ]
+  else SingleValue 0
 
 isValidMatrix :: Foldable t => [t a] -> Int -> Bool
 isValidMatrix [] _ = False
 isValidMatrix (xs:xss) n = if (length xs) /= n then False else isValidMatrix xss n
 
 multiply_associative m1 m2 m3 =
-  mmult (mmult m1 m2) m3 == mmult m1 (mmult m2 m3)
+  mmult (mmult (Square m1) (Square m2)) (Square m3) == mmult (Square m1) (mmult (Square m2) (Square m3))
 
--- zero is []
-multiply_with_zero m = mmult [] m == mmult m []
+multiply_with_zero m = mmult (SingleValue 0) (Square m) == mmult (Square m) (SingleValue 0)
 
 nonEmptyString :: Gen [Integer]
 nonEmptyString = listOf1 arbitrary
