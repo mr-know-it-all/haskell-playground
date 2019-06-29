@@ -1,7 +1,6 @@
 import Data.List
 import Test.QuickCheck
 
-
 data Matrix = Square [[Integer]] | SingleValue Integer deriving (Eq, Show)
 
 mmult :: Matrix -> Matrix -> Matrix
