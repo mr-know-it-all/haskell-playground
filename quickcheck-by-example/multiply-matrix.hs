@@ -3,23 +3,13 @@ import Test.QuickCheck
 
 data Matrix = Square [[Integer]] | SingleValue Integer deriving (Eq, Show)
 
-mmult :: Matrix -> Matrix -> Matrix -- TODO: refactor for cleaner code
-mmult (SingleValue n) (Square xss) =
-  if isValidMatrix xss 0 -- remove and generate valid values
-  then Square [[x * n | x <- xs] | xs <- xss]
-  else SingleValue 0
-mmult (Square xss) (SingleValue n) =
-  if isValidMatrix xss 0 -- remove and generate valid values
-  then Square [[x * n | x <- xs] | xs <- xss]
-  else SingleValue 0
-mmult (Square a) (Square b) =
-  if isValidMatrix a 0 && isValidMatrix b 0 -- remove and generate valid values
-  then Square [[ sum $ zipWith (*) ar bc | bc <- (transpose b)] | ar <- a ]
-  else SingleValue 0
+mmult :: Matrix -> Matrix -> Matrix
+mmult (SingleValue n) (Square xss) = Square [[x * n | x <- xs] | xs <- xss]
+mmult (Square xss) (SingleValue n) = Square [[x * n | x <- xs] | xs <- xss]
+mmult (Square a) (Square b)        = Square [[ sum $ zipWith (*) ar bc | bc <- (transpose b)] | ar <- a ]
 
-isValidMatrix :: Foldable t => [t a] -> Int -> Bool
-isValidMatrix [] _ = False
-isValidMatrix (xs:xss) n = if (length xs) /= n then False else isValidMatrix xss n
+isValidMatrix :: Foldable t => [t a] -> Bool
+isValidMatrix xss = (length $ nub [ length xs | xs <- xss ]) == 0 -- TODO: write more performant code
 
 multiply_associative m1 m2 m3 =
   mmult (mmult (Square m1) (Square m2)) (Square m3) == mmult (Square m1) (mmult (Square m2) (Square m3))
@@ -31,20 +21,23 @@ multiply_with_single_value m x =
 nonEmptyString :: Gen [Integer]
 nonEmptyString = listOf1 arbitrary
 
+matrixGen :: Gen [[Integer]]
+matrixGen = (listOf nonEmptyString) `suchThat` isValidMatrix
+
 integerGen :: Gen Integer
 integerGen = abs `fmap` (arbitrary :: Gen Integer)
 
 main :: IO()
 main = do
   quickCheck $
-    forAll (listOf nonEmptyString) $ \m1 ->
-    forAll (listOf nonEmptyString) $ \m2 ->
-    forAll (listOf nonEmptyString) $ \m3 ->
+    forAll matrixGen $ \m1 ->
+    forAll matrixGen $ \m2 ->
+    forAll matrixGen $ \m3 ->
       multiply_associative m1 m2 m3
   quickCheck $
-    forAll (listOf nonEmptyString) $ \m ->
+    forAll matrixGen $ \m ->
     forAll integerGen $ \x ->
       multiply_with_single_value m x
   quickCheck $
-    forAll (listOf nonEmptyString) $ \m ->
+    forAll matrixGen $ \m ->
       multiply_with_zero m
