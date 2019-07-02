@@ -4,8 +4,8 @@ import Test.QuickCheck
 data Matrix = Square [[Integer]] | SingleValue Integer deriving (Eq, Show)
 
 mmult :: Matrix -> Matrix -> Matrix
-mmult (SingleValue n) (Square xss) = Square [[x * n | x <- xs] | xs <- xss]
-mmult (Square xss) (SingleValue n) = Square [[x * n | x <- xs] | xs <- xss]
+mmult (SingleValue n) (Square xss) = Square [[ x * n | x <- xs] | xs <- xss ]
+mmult (Square xss) (SingleValue n) = Square [[ x * n | x <- xs] | xs <- xss ]
 mmult (Square a) (Square b)        = Square [[ sum $ zipWith (*) ar bc | bc <- (transpose b)] | ar <- a ]
 
 isValidMatrix :: Foldable t => [t a] -> Bool
