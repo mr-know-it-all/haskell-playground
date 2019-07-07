@@ -9,7 +9,7 @@ mmult (Square xss) (SingleValue n) = Square [[ x * n | x <- xs] | xs <- xss ]
 mmult (Square a) (Square b)        = Square [[ sum $ zipWith (*) ar bc | bc <- (transpose b)] | ar <- a ]
 
 isValidMatrix :: Foldable t => [t a] -> Bool
-isValidMatrix [] = False
+isValidMatrix []     = False
 isValidMatrix (x:xs) = all (\y -> length y == length x) xs
 
 multiply_associative m1 m2 m3 =
